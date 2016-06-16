@@ -30,7 +30,11 @@ class FileManager
             else
                 $fileName = $newName . '.' . $uploadedFile->getClientOriginalExtension();
 
-            return Storage::put($fileDir . $fileName, file_get_contents($uploadedFile->getRealPath()));
+            $fileContents = file_get_contents($uploadedFile->getRealPath());
+            if (Storage::put($fileDir . $fileName, $fileContents))
+                return $fileName;
+            else
+                return false;
         } else return false;
     }
 }
