@@ -43,13 +43,13 @@ class FileManager
         if (substr($fileDir,-1)!=DIRECTORY_SEPARATOR)
             $fileDir = $fileDir . DIRECTORY_SEPARATOR;
 
-        if (Storage::exists($fileDir . $file))
-            return Storage::get($fileDir . $file);
+        if (Storage::exists($fileDir . $file)){
+            $contents = Storage::get($fileDir . $file);
+            $manager = new ImageManager(array('driver' => 'gd','allow_url_fopen'=>true));
+            $background = $manager->make($contents);
+            return $background->response();
+        }
         else
             return null;
-
-//        $manager = new ImageManager(array('driver' => 'gd','allow_url_fopen'=>true));
-//        $background = $manager->make($contents);
-//        return $background->response();
     }
 }
