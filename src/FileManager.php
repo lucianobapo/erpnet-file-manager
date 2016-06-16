@@ -26,7 +26,7 @@ class FileManager
             if (!Storage::exists($fileDir)) Storage::makeDirectory($fileDir);
 
             if (is_null($newName))
-                $fileName = $uploadedFile->getFilename();
+                $fileName = $uploadedFile->getClientOriginalName(). '.' . $uploadedFile->getClientOriginalExtension();
             else
                 $fileName = $newName . '.' . $uploadedFile->getClientOriginalExtension();
 
