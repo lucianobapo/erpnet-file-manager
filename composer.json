@@ -1,0 +1,28 @@
+{
+    "name": "ilhanet/erpnet-file-manager",
+    "license": "MIT",
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "Luciano Porto",
+            "email": "luciano.bapo@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/http": "^5.2",
+        "league/flysystem-aws-s3-v3": "^1.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "ErpNET\\FileManager\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ErpNET\\FileManagerTests\\": "tests/"
+        }
+    }
+}
