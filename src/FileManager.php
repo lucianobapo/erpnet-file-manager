@@ -8,7 +8,6 @@
 
 namespace ErpNET\FileManager;
 
-
 use Illuminate\Support\Facades\Storage;
 
 class FileManager
