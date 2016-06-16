@@ -9,6 +9,7 @@
 namespace ErpNET\FileManager;
 
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 
 class FileManager
 {
@@ -36,5 +37,19 @@ class FileManager
             else
                 return false;
         } else return false;
+    }
+
+    public function loadImageFile($file, $fileDir){
+        if (substr($fileDir,-1)!=DIRECTORY_SEPARATOR)
+            $fileDir = $fileDir . DIRECTORY_SEPARATOR;
+
+        if (Storage::exists($fileDir . $file))
+            return Storage::get($fileDir . $file);
+        else
+            return null;
+
+//        $manager = new ImageManager(array('driver' => 'gd','allow_url_fopen'=>true));
+//        $background = $manager->make($contents);
+//        return $background->response();
     }
 }
