@@ -39,6 +39,29 @@ class FileManager
         } else return false;
     }
 
+    /**
+     * @param \GuzzleHttp\Psr7\Stream $fileContent
+     * @param string $fileDir
+     * @param string $newName
+     * @return bool
+     */
+    public function saveJpg($fileContent, $fileDir, $newName = null){
+        if (substr($fileDir,-1)!=DIRECTORY_SEPARATOR)
+            $fileDir = $fileDir . DIRECTORY_SEPARATOR;
+
+        if (!Storage::exists($fileDir)) Storage::makeDirectory($fileDir);
+
+        if (is_null($newName))
+            $fileName = md5($fileContent->getContents()).'.jpg';
+        else
+            $fileName = $newName;
+
+        if (Storage::put($fileDir . $fileName, $fileContent))
+            return $fileName;
+        else
+            return false;
+    }
+
     public function loadImageFile($file, $fileDir){
         if (substr($fileDir,-1)!=DIRECTORY_SEPARATOR)
             $fileDir = $fileDir . DIRECTORY_SEPARATOR;
