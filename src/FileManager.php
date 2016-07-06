@@ -56,10 +56,14 @@ class FileManager
         else
             $fileName = $newName;
 
-        if ((!Storage::exists($fileDir . $fileName)) && Storage::put($fileDir . $fileName, $fileContent->__toString()))
+        if (Storage::exists($fileDir . $fileName)){
             return $fileName;
-        else
-            return false;
+        } else {
+            if (Storage::put($fileDir . $fileName, $fileContent->__toString()))
+                return $fileName;
+            else
+                return false;
+        }
     }
 
     public function loadImageFile($file, $fileDir){
