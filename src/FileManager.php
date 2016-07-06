@@ -56,7 +56,8 @@ class FileManager
         else
             $fileName = $newName;
 
-        if (Storage::put($fileDir . $fileName, $fileContent->__toString()))
+
+        if ((!Storage::exists($fileDir . $fileName)) && Storage::put($fileDir . $fileName, $fileContent->__toString()))
             return $fileName;
         else
             return false;
