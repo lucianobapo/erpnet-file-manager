@@ -67,14 +67,28 @@ class FileManager
     }
 
     public function loadImageFile($file, $fileDir){
+        $image = $this->makeImage($file, $fileDir);
+        abort_if(is_null($image),500, 'Erro na Imagem');
+        return $image->response();
+    }
+
+    public function loadImageFileFit($size, $file, $fileDir){
+        $resolution = explode('x',$size);
+        $image = $this->makeImage($file, $fileDir);
+        abort_if(is_null($image),500, 'Erro na Imagem');
+        if (count($resolution)==2)
+            $image = $image->fit($resolution[0],$resolution[1]);
+        return $image->response();
+    }
+
+    protected function makeImage($file, $fileDir){
         if (substr($fileDir,-1)!=DIRECTORY_SEPARATOR)
             $fileDir = $fileDir . DIRECTORY_SEPARATOR;
 
         if (Storage::exists($fileDir . $file)){
             $contents = Storage::get($fileDir . $file);
             $manager = new ImageManager(array('driver' => 'gd','allow_url_fopen'=>true));
-            $background = $manager->make($contents);
-            return $background->response();
+            return $manager->make($contents);
         }
         else
             return null;
