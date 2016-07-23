@@ -37,16 +37,22 @@ class FileManager
 
             if (!Storage::exists($fileDir)) Storage::makeDirectory($fileDir);
 
+            $fileContents = file_get_contents($uploadedFile->getRealPath());
+
             if (is_null($newName))
-                $fileName = $uploadedFile->getClientOriginalName();
+//                $fileName = $uploadedFile->getClientOriginalName();
+                $fileName = md5($fileContents). '.' . $uploadedFile->getClientOriginalExtension();
             else
                 $fileName = $newName . '.' . $uploadedFile->getClientOriginalExtension();
 
-            $fileContents = file_get_contents($uploadedFile->getRealPath());
-            if (Storage::put($fileDir . $fileName, $fileContents))
+            if (Storage::exists($fileDir . $fileName)){
                 return $fileName;
-            else
-                return false;
+            } else {
+                if (Storage::put($fileDir . $fileName, $fileContents))
+                    return $fileName;
+                else
+                    return false;
+            }
         } else return false;
     }
 
