@@ -158,7 +158,7 @@ class FileManager
 
         $background = $this->makeImage($file, $fileDir);
 
-        $position = isset($params['position']) ? $params['position'] : 'center';
+        $position = isset($params['position']) ? $params['position'] : 'top-left';
         $x = isset($params['x']) ? $params['x'] : 0;
         $y = isset($params['y']) ? $params['y'] : 0;
         $background->insert($socialProfileImage, $position, $x, $y);
