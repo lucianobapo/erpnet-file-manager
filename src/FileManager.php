@@ -163,6 +163,7 @@ class FileManager
         $y = isset($params['y']) ? $params['y'] : 0;
         $background->insert($socialProfileImage, $position, $x, $y);
 
+
         if (isset($params['name'])){
             $namesize = isset($params['namesize']) ? $params['namesize'] : 24;
             $namecolor = isset($params['namecolor']) ? $params['namecolor'] : '000000';
