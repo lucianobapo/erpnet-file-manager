@@ -89,13 +89,29 @@ class FileManager
         return $image->response();
     }
 
-    public function loadImageFileFit($size, $file, $fileDir){
+    public function loadImageFileFit($size, $file, $fileDir, $format='png'){
         $resolution = explode('x',$size);
         $image = $this->makeImage($file, $fileDir);
-        abort_if(is_null($image),500, 'Erro na Imagem');
-        if (count($resolution)==2)
-            $image = $image->fit($resolution[0],$resolution[1]);
-        return $image->response();
+
+        abort_if(is_null($image),500, 'Erro ao carregar a Imagem');
+        abort_if(count($resolution)!=2,500, 'Erro na definição da Resolução');
+
+        $manager = new ImageManager(array('driver' => 'gd','allow_url_fopen'=>true));
+
+        $baseImg = $manager->canvas($resolution[0],$resolution[1]);
+        $image = $image->resize($resolution[0],$resolution[1], function ($c) {
+            $c->aspectRatio();
+            $c->upsize();
+        });
+
+        $baseImg
+            ->insert($image, 'center')
+            ->stream($format);
+
+        return $baseImg->response();
+
+//        $image = $image->fit($resolution[0],$resolution[1]);
+//        return $image->response();
     }
 
     /**
@@ -162,7 +178,6 @@ class FileManager
         $x = isset($params['x']) ? $params['x'] : 0;
         $y = isset($params['y']) ? $params['y'] : 0;
         $background->insert($socialProfileImage, $position, $x, $y);
-
 
         if (isset($params['name'])){
             $namesize = isset($params['namesize']) ? $params['namesize'] : 24;
