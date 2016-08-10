@@ -121,18 +121,17 @@ class FileManager
         if (substr($fileDir,-1)!=DIRECTORY_SEPARATOR)
             $fileDir = $fileDir . DIRECTORY_SEPARATOR;
 
-        if (Storage::exists($fileDir . $file)){
-            $contents = Storage::get($fileDir . $file);
+        if (!Storage::exists($fileDir . $file)) return null;
 
-            if ($this->cacheImageManager)
-                return $this->manager->cache(function($image) use ($contents) {
-                    $image->make($contents);
-                }, $this->cacheImageManagerDuration, true);
-            else
-                return $this->manager->make($contents);
+        if ($this->cacheImageManager)
+            return $this->manager->cache(function($image) use ($fileDir, $file) {
+                $contents = Storage::get($fileDir . $file);
+                $image->make($contents);
+            }, $this->cacheImageManagerDuration, true);
+        else{
+            $contents = Storage::get($fileDir . $file);
+            return $this->manager->make($contents);
         }
-        else
-            return null;
     }
 
     /**
