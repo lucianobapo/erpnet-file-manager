@@ -96,9 +96,7 @@ class FileManager
         abort_if(is_null($image),500, 'Erro ao carregar a Imagem');
         abort_if(count($resolution)!=2,500, 'Erro na definição da Resolução');
 
-        $manager = new ImageManager(array('driver' => 'gd','allow_url_fopen'=>true));
-
-        $baseImg = $manager->canvas($resolution[0],$resolution[1]);
+        $baseImg = $this->manager->canvas($resolution[0],$resolution[1]);
         $image = $image->resize($resolution[0],$resolution[1], function ($c) {
             $c->aspectRatio();
             $c->upsize();
@@ -125,14 +123,13 @@ class FileManager
 
         if (Storage::exists($fileDir . $file)){
             $contents = Storage::get($fileDir . $file);
-            $manager = new ImageManager(array('driver' => 'gd','allow_url_fopen'=>true));
 
             if ($this->cacheImageManager)
                 return $this->manager->cache(function($image) use ($contents) {
                     $image->make($contents);
                 }, $this->cacheImageManagerDuration, true);
             else
-                return $manager->make($contents);
+                return $this->manager->make($contents);
         }
         else
             return null;
