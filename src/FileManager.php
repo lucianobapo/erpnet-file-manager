@@ -126,7 +126,13 @@ class FileManager
         if (Storage::exists($fileDir . $file)){
             $contents = Storage::get($fileDir . $file);
             $manager = new ImageManager(array('driver' => 'gd','allow_url_fopen'=>true));
-            return $manager->make($contents);
+
+            if ($this->cacheImageManager)
+                return $this->manager->cache(function($image) use ($contents) {
+                    $image->make($contents);
+                }, $this->cacheImageManagerDuration, true);
+            else
+                return $manager->make($contents);
         }
         else
             return null;
