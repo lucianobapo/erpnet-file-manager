@@ -24,6 +24,7 @@ class FileManager
         if ($this->cacheImageManager) $config['cache'] = ['path' => storage_path('framework/cache/image')];
         $this->manager = new ImageManager($config);
     }
+
     /**
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile|array $uploadedFile
      * @param string $fileDir
@@ -48,7 +49,8 @@ class FileManager
             if (Storage::exists($fileDir . $fileName)){
                 return $fileName;
             } else {
-                if (Storage::put($fileDir . $fileName, $fileContents))
+                if (Storage::put($fileDir . $fileName, $fileContents,
+                    \Illuminate\Contracts\Filesystem\Filesystem::VISIBILITY_PUBLIC))
                     return $fileName;
                 else
                     return false;
