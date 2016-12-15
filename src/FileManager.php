@@ -205,4 +205,45 @@ class FileManager
 //        $fileName = $this->saveJpg($background->stream(), $fileDir, $newName);
 
     }
+
+    /**
+     * @param string $file
+     * @param string $fileDir
+     * @param string $id
+     * @param array $params
+     * @return \Intervention\Image\Image
+     */
+    public function resourceImgSocialProfileWithBg($file, $id, $params = [], $fileDir = 'jokes')
+    {
+        $size = empty($params['paramProfileImageSize']) ? '116x116': $params['paramProfileImageSize'];
+
+        $socialProfileImage = $this->makeSocialProfileImage($id, $size);
+
+        $background = $this->makeImage($file, $fileDir);
+
+        $position = isset($params['position']) ? $params['position'] : 'top-left';
+
+        $x = empty($params['paramProfileImageX']) ? 0 : $params['paramProfileImageX'];
+        $y = empty($params['paramProfileImageY']) ? 0 : $params['paramProfileImageY'];
+
+        $background->insert($socialProfileImage, $position, $x, $y);
+
+        if (isset($params['name'])){
+
+            $namesize = empty($params['paramNameSize']) ? 24 : $params['paramNameSize'];
+            $namecolor = empty($params['paramNameColor']) ? '000000' : $params['paramNameColor'];
+            $namex = empty($params['paramNameX']) ? 270 : $params['paramNameX'];
+            $namey = empty($params['paramNameY']) ? 230 : $params['paramNameY'];
+
+            $background->text(str_replace('-',' ',$params['name']), $namex, $namey, function ($font) use ($namesize, $namecolor) {
+//                $font->file(base_path('resources/fonts').'/arialbd.ttf');
+                $font->size($namesize);
+                $font->color('#'.$namecolor);
+                $font->align('left');
+                $font->valign('top');
+            });
+        }
+
+        return $background;
+    }
 }
