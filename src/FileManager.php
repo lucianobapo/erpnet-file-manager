@@ -236,7 +236,8 @@ class FileManager
             $namey = empty($params['paramNameY']) ? 230 : $params['paramNameY'];
 
             $background->text(str_replace('-',' ',$params['name']), $namex, $namey, function ($font) use ($namesize, $namecolor) {
-//                $font->file(base_path('resources/fonts').'/arialbd.ttf');
+                $fontFile = base_path('resources/fonts') . '/arialbd.ttf';
+                if (file_exists($fontFile)) $font->file($fontFile);
                 $font->size($namesize);
                 $font->color('#'.$namecolor);
                 $font->align('left');
