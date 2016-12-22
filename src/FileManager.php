@@ -228,7 +228,12 @@ class FileManager
 
         $background->insert($socialProfileImage, $position, $x, $y);
 
-        if (isset($params['name'])){
+        if (isset($params['name']) && isset($params['paramName']) && $params['paramName']){
+
+            if (isset($params['paramFirstName']) && $params['paramFirstName']) {
+                $aux = explode(' ', $params['name']);
+                $params['name'] = $aux[0];
+            }
 
             $namesize = empty($params['paramNameSize']) ? 24 : $params['paramNameSize'];
             $namecolor = empty($params['paramNameColor']) ? '000000' : $params['paramNameColor'];
